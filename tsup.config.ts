@@ -6,4 +6,5 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   noExternal: ["nanoid"],
+  dts: true,
 })

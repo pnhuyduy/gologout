@@ -1,6 +1,5 @@
 import { defaultPreferences, gologinConfig } from "./template"
 import rfdc from "rfdc"
-import { nanoid } from "nanoid/non-secure"
 import { randomFloat, randomUID } from "./utils"
 import { IOptions, IProfile } from "./types"
 const clone = rfdc()
@@ -17,9 +16,7 @@ export const getNewFingerprint = (payload: IProfile) => {
   newGologinConfig.timezone.id = payload.timezone
 
   // name
-  newGologinConfig.profile_id = nanoid(10)
-  newGologinConfig.name = nanoid(5)
-
+  newGologinConfig.name = randomUID(10)
   // Audio context
   newGologinConfig.audioContext.noiseValue = parseFloat(
     (randomFloat(1, 9) / 100000000).toExponential(12),
