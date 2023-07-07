@@ -11,6 +11,7 @@
   "main": "./src/index.ts",
   "module": "./dist/index.mjs",
   "exports": {
+    ".": "./src/index.ts",
     "require": "./dist/index.js",
     "import": "./dist/index.mjs"
   },
