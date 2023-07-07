@@ -6,5 +6,8 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   noExternal: ["nanoid"],
-  dts: true,
+  dts: {
+    resolve: true,
+    entry: "src/index.ts",
+  },
 })
