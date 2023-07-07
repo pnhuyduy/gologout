@@ -1,4 +1,4 @@
-import { generator } from "../src"
+import { generator, utils } from "../src"
 import { IOptions, IProfile } from "../src/types"
 import { execFile } from "child_process"
 import fs from "fs-extra"
@@ -10,7 +10,7 @@ const remotePort = "1113"
 
 const payload: IProfile = {
   proxy: {
-    mode: "socks5",
+    mode: "socks",
     host: "173.208.193.35",
     port: 35337,
     username: "TXszt2",
@@ -43,7 +43,12 @@ const startChrome = (dir: string) => {
   console.log("🚀 ~ child:", child.pid)
 }
 
-const userDataDirA = `./profiles/abc`
-const userDataDirB = `./profiles/xyz`
-startChrome(userDataDirA)
-startChrome(userDataDirB)
+// const userDataDirA = `./profiles/abc`
+// const userDataDirB = `./profiles/xyz`
+// startChrome(userDataDirA)
+// startChrome(userDataDirB)
+
+// ;(async () => {
+//   const proxyData = await utils.checkTimezone(payload.proxy)
+//   console.log("🚀 ~ ; ~ proxyData:", proxyData)
+// })()

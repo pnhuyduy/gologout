@@ -10,7 +10,7 @@ export interface IOptions {
 }
 
 export interface IProxy {
-  mode: "http" | "socks5" | null
+  mode: "http" | "socks" | null
   host: string
   port: number
   username: string
