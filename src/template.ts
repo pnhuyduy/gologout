@@ -1,10 +1,10 @@
 export const gologinConfig = {
   audioContext: {
     enable: true,
-    noiseValue: 5.244033360592e-8,
+    noiseValue: 1.832882596008e-8,
   },
   canvasMode: "off",
-  canvasNoise: 0.90711442,
+  canvasNoise: 0.33673235,
   client_rects_noise_enable: false,
   deviceMemory: 8192,
   dns: "",
@@ -15,41 +15,41 @@ export const gologinConfig = {
     longitude: 106.6257,
     mode: "prompt",
   },
-  getClientRectsNoice: 8.6516,
-  get_client_rects_noise: 8.6516,
-  hardwareConcurrency: 4,
-  is_m1: false,
+  getClientRectsNoice: 6.88538,
+  get_client_rects_noise: 6.88538,
+  hardwareConcurrency: 8,
+  is_m1: true,
   langHeader: "en-GB,en-US;q=0.9,en;q=0.8",
   languages: "en-GB,en-US,en",
   mediaDevices: {
     audioInputs: 1,
     audioOutputs: 1,
     enable: true,
-    uid: "5e75d5edd7a2465ab649c0e285f1c67e201249f274e34ecf81d5cc5a99",
+    uid: "5cc8444aa63c4a8e8c47ac49acadf375178c70b9e4f34b769ee69bb8de",
     videoInputs: 1,
   },
   mobile: {
-    device_scale_factor: 1.00000001,
+    device_scale_factor: 2.00000001,
     enable: false,
-    height: 1080,
-    width: 1920,
+    height: 900,
+    width: 1440,
   },
-  name: "noisy-rain",
+  name: "young-credit",
   navigator: {
     max_touch_points: 0,
-    platform: "Win32",
+    platform: "MacIntel",
   },
   plugins: {
     all_enable: true,
     flash_enable: true,
   },
-  profile_id: "64a6717053bc5c9245edea4c",
+  profile_id: "64a78b3e378dc576fc94fd38",
   proxy: {
     password: "",
     username: "",
   },
-  screenHeight: 1080,
-  screenWidth: 1920,
+  screenHeight: 900,
+  screenWidth: 1440,
   startupUrl: "",
   startup_urls: [""],
   storage: {
@@ -60,12 +60,11 @@ export const gologinConfig = {
   },
   unpinable_extension_names: ["passwords-ext"],
   userAgent:
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36",
   webGl: {
-    mode: true,
-    renderer:
-      "ANGLE (Intel, Intel(R) HD Graphics 620 Direct3D11 vs_5_0 ps_5_0, D3D11)",
-    vendor: "Google Inc. (Intel)",
+    mode: false,
+    renderer: "ANGLE (Apple, Apple M1, OpenGL 4.1)",
+    vendor: "Google Inc. (Apple)",
   },
   webRtc: {
     fill_based_on_ip: true,
@@ -75,14 +74,13 @@ export const gologinConfig = {
   },
   webgl: {
     metadata: {
-      mode: true,
-      renderer:
-        "ANGLE (Intel, Intel(R) HD Graphics 620 Direct3D11 vs_5_0 ps_5_0, D3D11)",
-      vendor: "Google Inc. (Intel)",
+      mode: false,
+      renderer: "ANGLE (Apple, Apple M1, OpenGL 4.1)",
+      vendor: "Google Inc. (Apple)",
     },
   },
   webglNoiceEnable: false,
-  webglNoiseValue: 73.87,
+  webglNoiseValue: 31.728,
   webglParams: {
     antialiasing: true,
     extensions: [
@@ -90,20 +88,19 @@ export const gologinConfig = {
       "EXT_color_buffer_half_float",
       "EXT_disjoint_timer_query_webgl2",
       "EXT_float_blend",
-      "EXT_texture_compression_bptc",
       "EXT_texture_compression_rgtc",
       "EXT_texture_filter_anisotropic",
       "EXT_texture_norm16",
       "KHR_parallel_shader_compile",
       "OES_draw_buffers_indexed",
       "OES_texture_float_linear",
-      "OVR_multiview2",
       "WEBGL_compressed_texture_s3tc",
       "WEBGL_compressed_texture_s3tc_srgb",
       "WEBGL_debug_renderer_info",
       "WEBGL_debug_shaders",
       "WEBGL_lose_context",
       "WEBGL_multi_draw",
+      "WEBGL_provoking_vertex",
     ],
     glCanvas: "webgl2",
     glParamValues: [
@@ -118,7 +115,7 @@ export const gologinConfig = {
         name: "ALIASED_POINT_SIZE_RANGE",
         value: {
           "0": 1,
-          "1": 1024,
+          "1": 64,
         },
       },
       {
@@ -139,7 +136,7 @@ export const gologinConfig = {
       },
       {
         name: "MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS",
-        value: 200704,
+        value: 266240,
       },
       {
         name: "MAX_COMBINED_TEXTURE_IMAGE_UNITS",
@@ -147,11 +144,11 @@ export const gologinConfig = {
       },
       {
         name: "MAX_COMBINED_UNIFORM_BLOCKS",
-        value: 24,
+        value: 32,
       },
       {
         name: "MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS",
-        value: 212992,
+        value: 266240,
       },
       {
         name: "MAX_CUBE_MAP_TEXTURE_SIZE",
@@ -163,11 +160,11 @@ export const gologinConfig = {
       },
       {
         name: "MAX_FRAGMENT_INPUT_COMPONENTS",
-        value: 120,
+        value: 128,
       },
       {
         name: "MAX_FRAGMENT_UNIFORM_BLOCKS",
-        value: 12,
+        value: 16,
       },
       {
         name: "MAX_FRAGMENT_UNIFORM_COMPONENTS",
@@ -187,7 +184,7 @@ export const gologinConfig = {
       },
       {
         name: "MAX_SAMPLES",
-        value: 16,
+        value: 4,
       },
       {
         name: "MAX_TEXTURE_IMAGE_UNITS",
@@ -195,7 +192,7 @@ export const gologinConfig = {
       },
       {
         name: "MAX_TEXTURE_LOD_BIAS",
-        value: 2,
+        value: 16,
       },
       {
         name: "MAX_TEXTURE_SIZE",
@@ -203,7 +200,7 @@ export const gologinConfig = {
       },
       {
         name: "MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS",
-        value: 120,
+        value: 64,
       },
       {
         name: "MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS",
@@ -219,15 +216,15 @@ export const gologinConfig = {
       },
       {
         name: "MAX_UNIFORM_BUFFER_BINDINGS",
-        value: 24,
+        value: 72,
       },
       {
         name: "MAX_VARYING_COMPONENTS",
-        value: 120,
+        value: 124,
       },
       {
         name: "MAX_VARYING_VECTORS",
-        value: 30,
+        value: 31,
       },
       {
         name: "MAX_VERTEX_ATTRIBS",
@@ -235,7 +232,7 @@ export const gologinConfig = {
       },
       {
         name: "MAX_VERTEX_OUTPUT_COMPONENTS",
-        value: 120,
+        value: 64,
       },
       {
         name: "MAX_VERTEX_TEXTURE_IMAGE_UNITS",
@@ -243,21 +240,21 @@ export const gologinConfig = {
       },
       {
         name: "MAX_VERTEX_UNIFORM_BLOCKS",
-        value: 12,
+        value: 16,
       },
       {
         name: "MAX_VERTEX_UNIFORM_COMPONENTS",
-        value: 16384,
+        value: 4096,
       },
       {
         name: "MAX_VERTEX_UNIFORM_VECTORS",
-        value: 4096,
+        value: 1024,
       },
       {
         name: "MAX_VIEWPORT_DIMS",
         value: {
-          "0": 32767,
-          "1": 32767,
+          "0": 16384,
+          "1": 16384,
         },
       },
       {
@@ -648,9 +645,8 @@ export const gologinConfig = {
   },
   webgl_noice_enable: false,
   webgl_noise_enable: false,
-  webgl_noise_value: 73.87,
+  webgl_noise_value: 31.728,
 }
-
 export const defaultPreferences = {
   NewTabPage: {
     PrevNavigationTime: "13302807227669318",
