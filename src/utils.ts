@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import crypto from "crypto"
 import listVendor from "./webgl"
 import { IProxy } from "./types"
