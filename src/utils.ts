@@ -107,9 +107,7 @@ export const checkTimezone = async (
 
           response.on("end", () => {
             if (data) {
-              resolve({
-                data,
-              })
+              resolve(data)
             } else {
               resolve(null)
             }
