@@ -56,8 +56,16 @@ export const extractProxyInfo = (d: string) => {
   }
 }
 
-export const checkTimezone = (proxy: IProxy) => {
-  console.log("🚀 ~ checkTimezone ~ proxy:", proxy)
+export const checkTimezone = async (
+  proxy: IProxy,
+): Promise<null | {
+  ip: string
+  country: string
+  timezone: string
+  latitude: string
+  longitude: string
+  accuracy: null | number
+}> => {
   let proxyAgent = `${proxy.mode}://${proxy.host}:${proxy.port}`
   let agent: any
   let data: any = null
