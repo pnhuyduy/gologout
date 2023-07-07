@@ -8,12 +8,11 @@
   "files": [
     "dist"
   ],
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "exports": {
     ".": "./src/index.ts",
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+    "types": "./src/index.ts"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
