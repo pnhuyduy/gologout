@@ -18,6 +18,7 @@ export interface IProxy {
 }
 
 export interface IProfile {
+  name?: string
   proxy: IProxy
   timezone: string
 }

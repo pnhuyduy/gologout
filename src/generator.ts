@@ -9,7 +9,7 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
   const newGologinConfig = clone(gologinConfig)
 
   // name
-  newGologinConfig.name = randomUID(5)
+  newGologinConfig.name = payload.name || randomUID(5)
 
   // Proxy
   if (payload.proxy.mode) {
