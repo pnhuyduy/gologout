@@ -877,6 +877,15 @@ var defaultPreferences = {
 import rfdc from "rfdc";
 
 // src/utils.ts
+var utils_exports = {};
+__export(utils_exports, {
+  checkTimezone: () => checkTimezone,
+  extractProxyInfo: () => extractProxyInfo,
+  randomFloat: () => randomFloat,
+  randomInt: () => randomInt,
+  randomUID: () => randomUID,
+  randomWebGL: () => randomWebGL
+});
 import crypto from "crypto";
 
 // src/webgl.ts
@@ -1247,6 +1256,7 @@ var webgl_default = [
 // src/utils.ts
 import { HttpsProxyAgent } from "hpagent";
 import ProxyAgent from "simple-proxy-agent";
+import https from "https";
 var randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
@@ -1266,32 +1276,102 @@ var randomWebGL = () => {
     vendor: vendor.value
   };
 };
+var extractProxyInfo = (d) => {
+  try {
+    const data = JSON.parse(`${d.toString()}`.trim());
+    let results = {
+      ip: "",
+      country: "",
+      timezone: "",
+      latitude: "",
+      longitude: "",
+      accuracy: null
+    };
+    results = {
+      ip: data.ip,
+      country: data.country,
+      timezone: data.timezone,
+      latitude: data.ll[0],
+      longitude: data.ll[1],
+      accuracy: data.accuracy || null
+    };
+    return results;
+  } catch (error) {
+    return null;
+  }
+};
+var checkTimezone = async (proxy) => {
+  let proxyAgent = `${proxy.mode}://${proxy.host}:${proxy.port}`;
+  let agent;
+  let data = null;
+  if (proxy.username && proxy.password) {
+    proxyAgent = `${proxy.mode}://${encodeURIComponent(
+      proxy.username
+    )}:${encodeURIComponent(proxy.password)}@${proxy.host}:${proxy.port}`;
+  }
+  if (proxy.mode === "http") {
+    agent = new HttpsProxyAgent({
+      keepAlive: true,
+      keepAliveMsecs: 1e3,
+      maxSockets: 256,
+      maxFreeSockets: 256,
+      proxy: proxyAgent
+    });
+  } else {
+    agent = new ProxyAgent(proxyAgent);
+  }
+  return new Promise((resolve, reject) => {
+    https.get(
+      "https://time.gologin.com/timezone",
+      {
+        agent,
+        rejectUnauthorized: false,
+        timeout: 1e4
+      },
+      (response) => {
+        response.on("error", (err) => {
+          resolve(null);
+        });
+        response.on("data", (d) => {
+          data = extractProxyInfo(d);
+        });
+        response.on("end", () => {
+          if (data) {
+            resolve(data);
+          } else {
+            resolve(null);
+          }
+        });
+      }
+    ).on("error", () => resolve(null)).end();
+  });
+};
 
 // src/generator.ts
 import { platform, arch } from "os";
 var clone = rfdc();
-var getNewFingerprint = (payload2, options2) => {
+var getNewFingerprint = (payload, options) => {
   const newGologinConfig = clone(gologinConfig);
-  newGologinConfig.name = payload2.name || randomUID(5);
-  if (payload2.proxy.mode) {
-    const { username, password } = payload2.proxy;
+  newGologinConfig.name = payload.name || randomUID(5);
+  if (payload.proxy.mode) {
+    const { username, password } = payload.proxy;
     newGologinConfig.proxy.username = username;
     newGologinConfig.proxy.password = password;
-    newGologinConfig.timezone.id = payload2.timezone;
+    newGologinConfig.timezone.id = payload.timezone;
   }
   const audioNoiseValue = parseFloat(
     (randomFloat(1, 9) / 1e8).toExponential(12)
   );
   newGologinConfig.audioContext.noiseValue = audioNoiseValue;
-  newGologinConfig.audioContext.enable = options2.audioContext.mode === "noise";
+  newGologinConfig.audioContext.enable = options.audioContext.mode === "noise";
   const canvasNoise = parseFloat(Math.random().toFixed(8));
-  newGologinConfig.canvasMode = options2.canvas.mode;
+  newGologinConfig.canvasMode = options.canvas.mode;
   newGologinConfig.canvasNoise = canvasNoise;
   const clientRectsNoise = parseFloat(randomFloat(1, 9).toFixed(4));
   newGologinConfig.getClientRectsNoice = newGologinConfig.get_client_rects_noise = clientRectsNoise;
-  newGologinConfig.client_rects_noise_enable = options2.clientRects.mode === "noise";
-  const maskWebGLMetadata = options2.webGLMetadata.mode === "mask";
-  const { vendor, renderer } = options2.webGLMetadata;
+  newGologinConfig.client_rects_noise_enable = options.clientRects.mode === "noise";
+  const maskWebGLMetadata = options.webGLMetadata.mode === "mask";
+  const { vendor, renderer } = options.webGLMetadata;
   if (platform() === "darwin") {
     if (arch() === "arm64") {
       newGologinConfig.is_m1 = true;
@@ -1327,17 +1407,17 @@ var getNewFingerprint = (payload2, options2) => {
   }
   const webGlNoise = parseFloat(randomFloat(1, 99).toFixed(3));
   newGologinConfig.webglNoiseValue = newGologinConfig.webgl_noise_value = webGlNoise;
-  const webGLNoiseImage = options2.webGL.mode === "noise";
+  const webGLNoiseImage = options.webGL.mode === "noise";
   newGologinConfig.webgl_noice_enable = newGologinConfig.webglNoiceEnable = newGologinConfig.webgl_noise_enable = webGLNoiseImage;
-  newGologinConfig.deviceMemory = options2.deviceMemory * 1024;
-  newGologinConfig.hardwareConcurrency = options2.hardwareConcurrency;
-  newGologinConfig.doNotTrack = options2.doNotTrack;
-  newGologinConfig.dns = options2.dns;
-  const [width, height] = options2.screen.split("x");
+  newGologinConfig.deviceMemory = options.deviceMemory * 1024;
+  newGologinConfig.hardwareConcurrency = options.hardwareConcurrency;
+  newGologinConfig.doNotTrack = options.doNotTrack;
+  newGologinConfig.dns = options.dns;
+  const [width, height] = options.screen.split("x");
   newGologinConfig.screenWidth = parseInt(width, 10);
   newGologinConfig.screenHeight = parseInt(height, 10);
-  newGologinConfig.webRtc.mode = options2.webrtc.mode;
-  newGologinConfig.geoLocation.mode = options2.location.mode;
+  newGologinConfig.webRtc.mode = options.webrtc.mode;
+  newGologinConfig.geoLocation.mode = options.location.mode;
   newGologinConfig.mediaDevices.uid = randomUID();
   newGologinConfig.mediaDevices.audioInputs = randomInt(0, 3);
   newGologinConfig.mediaDevices.audioOutputs = randomInt(0, 3);
@@ -1346,7 +1426,7 @@ var getNewFingerprint = (payload2, options2) => {
     newGologinConfig.userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36";
     newGologinConfig.navigator.platform = "MacIntel";
   } else {
-    newGologinConfig.userAgent = options2.userAgent;
+    newGologinConfig.userAgent = options.userAgent;
     newGologinConfig.navigator.platform = "Win32";
   }
   const prefs = {
@@ -1355,9 +1435,9 @@ var getNewFingerprint = (payload2, options2) => {
   };
   return prefs;
 };
-var spawnArgs = (options2, payload2) => {
-  const { userDataDir } = options2;
-  const { proxy, timezone } = payload2;
+var spawnArgs = (options, payload) => {
+  const { userDataDir } = options;
+  const { proxy, timezone } = payload;
   let proxyStr = `${proxy.mode}://${proxy.host}:${proxy.port}`;
   let params = [
     `--user-data-dir=${userDataDir}`,
@@ -1373,89 +1453,7 @@ var spawnArgs = (options2, payload2) => {
   }
   return params;
 };
-
-// test/index.ts
-import { execFile } from "child_process";
-import fs from "fs-extra";
-import path from "path";
-var executePath = "C:/Users/Admin/Desktop/hdp/orbita-browser/chrome.exe";
-var remotePort = "1113";
-var payload = {
-  proxy: {
-    mode: "http",
-    host: "173.208.193.35",
-    port: 31337,
-    username: "Po2mMz",
-    password: "cGKmLG"
-  },
-  timezone: "America/New_York"
+export {
+  generator_exports as generator,
+  utils_exports as utils
 };
-var options = {
-  version: "113",
-  userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36",
-  screen: "1366x768",
-  hardwareConcurrency: 8,
-  deviceMemory: 8,
-  doNotTrack: false,
-  dns: "",
-  webrtc: {
-    mode: "alerted",
-    fillBasedOnIP: true
-  },
-  timezone: {
-    fillBasedOnIP: true,
-    id: ""
-  },
-  location: {
-    mode: "prompt"
-  },
-  language: {
-    autoLang: true,
-    value: "en-GB,en-US,en"
-  },
-  canvas: {
-    mode: "noise"
-  },
-  clientRects: {
-    mode: "noise"
-  },
-  audioContext: {
-    mode: "noise"
-  },
-  mediaDevices: {
-    mode: "noise"
-  },
-  webGL: {
-    mode: "noise"
-  },
-  webGLMetadata: {
-    mode: "mask",
-    vendor: "Google Inc. (Intel)",
-    renderer: "ANGLE (Intel, Intel(R) HD Graphics 620 Direct3D11 vs_5_0 ps_5_0, D3D11)"
-  },
-  fonts: {
-    mode: "noise"
-  }
-};
-var startChrome = async (dir) => {
-  try {
-    const filePref = path.join(dir, "Default", "Preferences");
-    const prefs = generator_exports.getNewFingerprint(payload, options);
-    fs.ensureFileSync(filePref);
-    fs.writeJSON(filePref, prefs);
-    const chromeParams = generator_exports.spawnArgs({ userDataDir: dir }, payload);
-    let params = [
-      `--remote-debugging-port=${remotePort}`,
-      ...chromeParams,
-      `"https://iphey.com"`
-    ];
-    const child = execFile(executePath, params);
-    console.log("\u{1F680} ~ child:", child.pid);
-  } catch (error) {
-    console.log(error);
-  }
-};
-(async () => {
-  const userDataDirA = path.join(path.resolve(), "profiles", "abc");
-  await startChrome(userDataDirA);
-})();
