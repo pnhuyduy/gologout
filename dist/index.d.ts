@@ -1,12 +1,51 @@
-type TMode = "noise" | "mask" | "block" | "off"
+type TMode = "noise" | "off"
 
 interface IOptions {
-  userDataDir: string
-  audioContext: TMode
-  canvas: TMode
-  clientRects: TMode
-  webGL: TMode
-  webGLMetadata: TMode
+  version: string
+  userAgent: string
+  screen: string
+  hardwareConcurrency: number
+  deviceMemory: number
+  doNotTrack: boolean
+  dns: string
+  webrtc: {
+    mode: "alerted" | "disabled" | "real"
+    fillBasedOnIP: boolean
+  }
+  timezone: {
+    fillBasedOnIP: boolean
+    id: string
+  }
+  location: {
+    mode: "prompt" | "allow" | "block"
+  }
+  language: {
+    autoLang: boolean
+    value: string
+  }
+  canvas: {
+    mode: TMode
+  }
+  clientRects: {
+    mode: TMode
+  }
+  audioContext: {
+    mode: TMode
+  }
+  mediaDevices: {
+    mode: TMode
+  }
+  webGL: {
+    mode: TMode
+  }
+  webGLMetadata: {
+    mode: "mask" | "off"
+    vendor: string
+    renderer: string
+  }
+  fonts: {
+    mode: TMode
+  }
 }
 
 interface IProxy {
@@ -18,8 +57,16 @@ interface IProxy {
 }
 
 interface IProfile {
+  name?: string
   proxy: IProxy
   timezone: string
+  latitude: string
+  longitude: string
+  accuracy: number
+}
+
+interface ISpawnArgs {
+  userDataDir: string
 }
 
 declare const getNewFingerprint: (payload: IProfile, options: IOptions) => {
@@ -347,7 +394,7 @@ declare const getNewFingerprint: (payload: IProfile, options: IOptions) => {
         };
     };
 };
-declare const spawnArgs: (options: Pick<IOptions, "userDataDir">, payload: IProfile) => string[];
+declare const spawnArgs: (options: Pick<ISpawnArgs, "userDataDir">, payload: IProfile) => string[];
 
 declare const generator_getNewFingerprint: typeof getNewFingerprint;
 declare const generator_spawnArgs: typeof spawnArgs;

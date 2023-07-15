@@ -1,7 +1,7 @@
 import { defaultPreferences, gologinConfig } from "./template"
 import rfdc from "rfdc"
 import { randomFloat, randomInt, randomUID, randomWebGL } from "./utils"
-import { IOptions, IProfile } from "./types"
+import { IOptions, IProfile, ISpawnArgs } from "./types"
 import { platform, arch } from "os"
 const clone = rfdc()
 
@@ -25,21 +25,23 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
     (randomFloat(1, 9) / 100000000).toExponential(12),
   )
   newGologinConfig.audioContext.noiseValue = audioNoiseValue
-  newGologinConfig.audioContext.enable = options.audioContext === "noise"
+  newGologinConfig.audioContext.enable = options.audioContext.mode === "noise"
 
   // canvas
   const canvasNoise = parseFloat(Math.random().toFixed(8))
-  newGologinConfig.canvasMode = options.canvas
+  newGologinConfig.canvasMode = options.canvas.mode
   newGologinConfig.canvasNoise = canvasNoise
 
   // clientRects
   const clientRectsNoise = parseFloat(randomFloat(1, 9).toFixed(4))
   newGologinConfig.getClientRectsNoice =
     newGologinConfig.get_client_rects_noise = clientRectsNoise
-  newGologinConfig.client_rects_noise_enable = options.clientRects === "noise"
+  newGologinConfig.client_rects_noise_enable =
+    options.clientRects.mode === "noise"
 
   // webGL
-  const maskWebGLMetadata = options.webGLMetadata === "mask"
+  const maskWebGLMetadata = options.webGLMetadata.mode === "mask"
+  const { vendor, renderer } = options.webGLMetadata
   if (platform() === "darwin") {
     if (arch() === "arm64") {
       newGologinConfig.is_m1 = true
@@ -57,15 +59,13 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
       newGologinConfig.is_m1 = false
       newGologinConfig.webGl = {
         mode: false,
-        vendor: "Google Inc. (Intel Inc.)",
-        renderer:
-          "ANGLE (Intel Inc., Intel Iris Pro OpenGL Engine, OpenGL 4.1)",
+        vendor,
+        renderer,
       }
       newGologinConfig.webgl.metadata = {
         mode: false,
-        vendor: "Google Inc. (Intel Inc.)",
-        renderer:
-          "ANGLE (Intel Inc., Intel Iris Pro OpenGL Engine, OpenGL 4.1)",
+        vendor,
+        renderer,
       }
     }
   } else {
@@ -80,23 +80,34 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
   const webGlNoise = parseFloat(randomFloat(1, 99).toFixed(3))
   newGologinConfig.webglNoiseValue = newGologinConfig.webgl_noise_value =
     webGlNoise
-  const webGLNoiseImage = options.webGL === "noise"
+  const webGLNoiseImage = options.webGL.mode === "noise"
   newGologinConfig.webgl_noice_enable =
     newGologinConfig.webglNoiceEnable =
     newGologinConfig.webgl_noise_enable =
       webGLNoiseImage
 
   // deviceMemory
-  const deviceMemoryList = [4096, 8192, 16384, 32768]
-  const randomDeviceMemory =
-    deviceMemoryList[randomInt(0, deviceMemoryList.length)]
-  newGologinConfig.deviceMemory = randomDeviceMemory
+  newGologinConfig.deviceMemory = options.deviceMemory * 1024
 
   // hardwareConcurrency
-  const hardwareConcurrencyList = [4, 6, 12, 24]
-  const randomHardwareConcurrency =
-    hardwareConcurrencyList[randomInt(0, hardwareConcurrencyList.length)]
-  newGologinConfig.hardwareConcurrency = randomHardwareConcurrency
+  newGologinConfig.hardwareConcurrency = options.hardwareConcurrency
+
+  // Do not track
+  newGologinConfig.doNotTrack = options.doNotTrack
+
+  // DNS
+  newGologinConfig.dns = options.dns
+
+  // screen
+  const [width, height] = options.screen.split("x")
+  newGologinConfig.screenWidth = parseInt(width, 10)
+  newGologinConfig.screenHeight = parseInt(height, 10)
+
+  // WebRTC
+  newGologinConfig.webRtc.mode = options.webrtc.mode
+
+  // Location
+  newGologinConfig.geoLocation.mode = options.location.mode
 
   // mediaDevices
   newGologinConfig.mediaDevices.uid = randomUID()
@@ -110,8 +121,7 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36"
     newGologinConfig.navigator.platform = "MacIntel"
   } else {
-    newGologinConfig.userAgent =
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36"
+    newGologinConfig.userAgent = options.userAgent
     newGologinConfig.navigator.platform = "Win32"
   }
 
@@ -124,7 +134,7 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
 }
 
 export const spawnArgs = (
-  options: Pick<IOptions, "userDataDir">,
+  options: Pick<ISpawnArgs, "userDataDir">,
   payload: IProfile,
 ) => {
   const { userDataDir } = options

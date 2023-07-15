@@ -1,12 +1,51 @@
-type TMode = "noise" | "mask" | "block" | "off"
+type TMode = "noise" | "off"
 
 export interface IOptions {
-  userDataDir: string
-  audioContext: TMode
-  canvas: TMode
-  clientRects: TMode
-  webGL: TMode
-  webGLMetadata: TMode
+  version: string
+  userAgent: string
+  screen: string
+  hardwareConcurrency: number
+  deviceMemory: number
+  doNotTrack: boolean
+  dns: string
+  webrtc: {
+    mode: "alerted" | "disabled" | "real"
+    fillBasedOnIP: boolean
+  }
+  timezone: {
+    fillBasedOnIP: boolean
+    id: string
+  }
+  location: {
+    mode: "prompt" | "allow" | "block"
+  }
+  language: {
+    autoLang: boolean
+    value: string
+  }
+  canvas: {
+    mode: TMode
+  }
+  clientRects: {
+    mode: TMode
+  }
+  audioContext: {
+    mode: TMode
+  }
+  mediaDevices: {
+    mode: TMode
+  }
+  webGL: {
+    mode: TMode
+  }
+  webGLMetadata: {
+    mode: "mask" | "off"
+    vendor: string
+    renderer: string
+  }
+  fonts: {
+    mode: TMode
+  }
 }
 
 export interface IProxy {
@@ -21,4 +60,11 @@ export interface IProfile {
   name?: string
   proxy: IProxy
   timezone: string
+  latitude: string
+  longitude: string
+  accuracy: number
+}
+
+export interface ISpawnArgs {
+  userDataDir: string
 }

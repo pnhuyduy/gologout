@@ -77,7 +77,6 @@ export const checkTimezone = async (
       proxy.username,
     )}:${encodeURIComponent(proxy.password)}@${proxy.host}:${proxy.port}`
   }
-  console.log(proxyAgent)
 
   if (proxy.mode === "http") {
     agent = new HttpsProxyAgent({
