@@ -84,7 +84,7 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
   newGologinConfig.webgl_noice_enable =
     newGologinConfig.webglNoiceEnable =
     newGologinConfig.webgl_noise_enable =
-      webGLNoiseImage
+    webGLNoiseImage
 
   // deviceMemory
   newGologinConfig.deviceMemory = options.deviceMemory * 1024
@@ -136,6 +136,7 @@ export const getNewFingerprint = (payload: IProfile, options: IOptions) => {
 export const spawnArgs = (
   options: Pick<ISpawnArgs, "userDataDir">,
   payload: IProfile,
+  args: string[] = []
 ) => {
   const { userDataDir } = options
   const { proxy, timezone } = payload
@@ -146,6 +147,7 @@ export const spawnArgs = (
     "--lang=en",
     "--font-masking-mode=2",
     "--password-store=basic",
+    ...args
   ]
 
   if (proxy.mode) {

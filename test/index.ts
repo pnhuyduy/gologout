@@ -87,10 +87,10 @@ const startChrome = async (dir: string) => {
   }
 }
 
-;(async () => {
-  const userDataDirA = path.join(path.resolve(), "profiles", "abc")
-  await startChrome(userDataDirA)
-})()
+  ; (async () => {
+    const userDataDirA = path.join(path.resolve(), "profiles", "abc")
+    await startChrome(userDataDirA)
+  })()
 
 // ;(async () => {
 //   const proxyData = await utils.checkTimezone(payload.proxy)

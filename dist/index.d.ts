@@ -394,7 +394,7 @@ declare const getNewFingerprint: (payload: IProfile, options: IOptions) => {
         };
     };
 };
-declare const spawnArgs: (options: Pick<ISpawnArgs, "userDataDir">, payload: IProfile) => string[];
+declare const spawnArgs: (options: Pick<ISpawnArgs, "userDataDir">, payload: IProfile, args?: string[]) => string[];
 
 declare const generator_getNewFingerprint: typeof getNewFingerprint;
 declare const generator_spawnArgs: typeof spawnArgs;
